@@ -25,3 +25,9 @@ check_df_compatibility <- function(df_syn, df_orig) {
   stopifnot(colnames(df_syn) == colnames(df_orig))
   invisible(TRUE)
 }
+
+#' First version of permute df
+permute_df_combined <- function(df_combined) {
+  df_combined[["__Z__"]] <- sample(df_combined[["__Z__"]])
+  return(df_combined)
+}
