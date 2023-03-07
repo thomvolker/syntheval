@@ -4,7 +4,7 @@
 \alias{utility_pmse_logistic}
 \title{pMSE metric using logistic regression}
 \usage{
-utility_pmse_logistic(df_syn, df_orig)
+utility_pmse_logistic(df_syn, df_orig, test = FALSE)
 }
 \arguments{
 \item{df_syn}{synthesized data frame}

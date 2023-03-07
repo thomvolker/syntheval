@@ -18,28 +18,20 @@
 utility_pmse_logistic <- function(df_syn, df_orig, test = FALSE) {
   check_df_compatibility(df_syn, df_orig)
   df_combined <- create_combined_df(df_syn, df_orig)
+  util_value <- .utility_pmse_logistic(df_combined)
 
   if (test) {
-
-    util_value <- .utility_pmse_logistic(df_combined)
-
-    ref_values <- vapply(1:500, \(i) {
-      df_combined |>
-        permute_df_combined() |>
-        .utility_pmse_logistic()
-      }, FUN.VALUE = numeric(1))
-
-    ref_dist <- ecdf(ref_values)
-    return(list(value = util_value, pval = ref_dist(util_value)))
+    ref_dist <- permutation_distribution(df_combined, .utility_pmse_logistic)
+    return(list(value = util_value, pval = 1 - ref_dist(util_value), ref_dist = ref_dist))
   }
 
-  return(.utility_pmse_logistic(df_combined))
+  return(util_value)
 }
 
 .utility_pmse_logistic <- function(df_combined) {
   fit <- glm(`__Z__` ~ ., family = "binomial", df_combined)
   prd <- predict(fit, type = "response")
-  n_syn <- sum(df_combined[["__Z__"]])
+  n_syn <- table(df_combined[["__Z__"]])["synthetic"]
   N <- nrow(df_combined)
   return(c(crossprod(prd-(n_syn/N))))
 }
