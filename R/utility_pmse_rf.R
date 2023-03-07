@@ -5,6 +5,8 @@
 #'
 #' @return pmse value
 #'
+#' @importFrom ranger ranger
+#'
 #' @examples
 #'  # bad
 #'  utility_pmse_rf(birthwt_ind, birthwt)
@@ -12,6 +14,7 @@
 #'  # good
 #'  utility_pmse_rf(birthwt_dep, birthwt)
 #'
+#' @export
 utility_pmse_rf <- function(df_syn, df_orig, test = FALSE, ...) {
   check_df_compatibility(df_syn, df_orig)
   df_combined <- create_combined_df(df_syn, df_orig)
